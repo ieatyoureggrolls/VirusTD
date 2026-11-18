@@ -9,17 +9,23 @@
         public int Cost { get; set; } = 10;
         public int MotionRange { get; set; } //this is not how it will be at the end
 
-        public void BecomeInfected() 
+        public void CheckInfected() 
         {
-            if (Illness > Immunity) 
+            if (Illness > Immunity)
             {
                 IsInfected = true;
             }
+            else if (Illness < Immunity) 
+            {
+                IsInfected = false;
+            }
         }
 
-        public void IsHit() 
+        public void IsHitby(Enemy enemy) 
         {
-            Illness++;
+
+            Illness += enemy.attack;
+            CheckInfected();
         }
 
         public void Quarantined() 
