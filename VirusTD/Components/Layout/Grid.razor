@@ -1,11 +1,35 @@
-﻿<h3>Component1</h3>
+﻿@using VirusTD.Models
+
+<div class="board">
+    @for (int y = 0; y < Height; y++)
+    {
+        for (int x = 0; x < Width; x++)
+        {
+            var cell = cells[x, y];
+            <div class="cell @cell.Type.ToString().ToLower()"
+                 @onclick="() => OnCellClicked(cell)">
+            </div>
+        }
+    }
+</div>
 
 @code {
-    int row = 10;
-    int col = 10;
+    [Parameter] public int Width { get; set; } = 10;
+    [Parameter] public int Height { get; set; } = 10;
 
-    
+    private GridCell[,] cells = default!;
 
-    
+    //Populates the Map Grid
+    protected override void OnInitialized()
+    {
+        cells = new GridCell[Width, Height];
+        for (int x = 0; x < Width; x++)
+            for (int y = 0; y < Height; y++)
+                cells[x, y] = new GridCell { X = x, Y = y };
+    }
 
+    private void OnCellClicked(GridCell cell)
+    {
+        Console.WriteLine($"Clicked {cell.X}, {cell.Y}");
+    }
 }
