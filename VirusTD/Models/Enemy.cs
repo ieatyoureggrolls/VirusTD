@@ -1,4 +1,4 @@
-﻿namespace VirusTD
+﻿namespace VirusTD.Models
 {
     public class Enemy
     {
