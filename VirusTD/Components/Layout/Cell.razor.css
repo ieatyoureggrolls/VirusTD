@@ -1,0 +1,6 @@
+/* CSS for Cell component */
+.cell
+{
+    border:double;
+    padding:50px;
+}
