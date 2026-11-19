@@ -9,4 +9,23 @@
     [Parameter] public EventCallback<GridCell> OnCellClicked { get; set; }
 
     private Task HandleClick() => OnCellClicked.InvokeAsync(Data);
+
+    // private string CheckForTower()
+    // {
+
+    //     if (Data.Type != CellType.Path)
+    //     {
+    //         if (Data.Occupant == null)
+    //         {
+                                  //WORK IN PROGRESS
+    //         }
+    //         else
+    //         {
+    //             return;
+    //         }    
+    //     }
+
+        
+    // }
+
 }

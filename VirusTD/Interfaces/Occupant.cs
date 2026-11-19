@@ -1,6 +1,6 @@
 ﻿namespace VirusTD.Interfaces
 {
-    public class Occupant
+    public interface Occupant
     {
     }
 }

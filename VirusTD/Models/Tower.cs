@@ -1,6 +1,8 @@
-﻿namespace VirusTD.Models
+﻿using VirusTD.Interfaces;
+
+namespace VirusTD.Models
 {
-    public class Tower
+    public class Tower : Occupant
     {
         public int Immunity { get; set
             {
