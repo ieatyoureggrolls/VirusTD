@@ -1,15 +1,11 @@
-﻿@using VirusTD.Models
+﻿
+@using System.Diagnostics
 
-<div class="board">
-    @for (int y = 0; y < Height; y++)
+<!-- The  style="grid-template-columns: repeat(@Width, 48px) tells css to make the width of all cells 48px, as well as make the cells appear in a grid format -->
+<div class="board" style="grid-template-columns: repeat(@Width, 48px);">
+    @foreach (var cell in cells)
     {
-        for (int x = 0; x < Width; x++)
-        {
-            var cell = cells[x, y];
-            <div class="cell @cell.Type.ToString().ToLower()"
-                 @onclick="() => OnCellClicked(cell)">
-            </div>
-        }
+        <Cell Data="cell" OnCellClicked="HandleCellClicked" />
     }
 </div>
 
@@ -17,19 +13,36 @@
     [Parameter] public int Width { get; set; } = 10;
     [Parameter] public int Height { get; set; } = 10;
 
-    private GridCell[,] cells = default!;
+    private List<GridCell> cells = new();
 
-    //Populates the Map Grid
+    //Starts when blazor creates this component
     protected override void OnInitialized()
     {
-        cells = new GridCell[Width, Height];
-        for (int x = 0; x < Width; x++)
-            for (int y = 0; y < Height; y++)
-                cells[x, y] = new GridCell { X = x, Y = y };
+        BuildGrid();
     }
 
-    private void OnCellClicked(GridCell cell)
+    private void BuildGrid()
     {
-        Console.WriteLine($"Clicked {cell.X}, {cell.Y}");
+        //Clears cel array
+        cells.Clear();
+        //Setd id to 0, this will be used to keep track of a cell
+        int id = 0;
+        for (int y = 0; y < Height; y++)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                //Initializes and adds a GridCell class to the cells array
+                cells.Add(new GridCell { Id = id++, X = x, Y = y });
+            }
+        }
+    }
+
+    private void HandleCellClicked(GridCell cell)
+    {
+        // Tower placement goes here later.
+        //simple type check
+        cell.Type = cell.Type == CellType.Buildable ? CellType.Path : CellType.Buildable;
+        Debug.WriteLine(cell.Type);
+        Debug.WriteLine(cell.X + "" + cell.Y);
     }
 }

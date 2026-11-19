@@ -1,0 +1,5 @@
+/* CSS for Grid component */
+.board {
+    display: grid;
+    width: max-content;
+}

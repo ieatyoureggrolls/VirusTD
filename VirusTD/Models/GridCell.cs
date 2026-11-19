@@ -1,8 +1,16 @@
-﻿namespace VirusTD.Models;
-public enum CellType { Buildable, Path }
-public class GridCell
+﻿using VirusTD.Interfaces;
+
+namespace VirusTD
 {
-    public int X { get; set; }
-    public int Y { get; set; }
-    public CellType Type { get; set; } = CellType.Buildable;
+    public enum CellType { Buildable, Path }
+    public class GridCell
+    {
+        public int Id { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public CellType Type { get; set; } = CellType.Buildable;
+        //If there is a tower or enemy
+        public Occupant? Occupant { get; set; }
+
+    }
 }

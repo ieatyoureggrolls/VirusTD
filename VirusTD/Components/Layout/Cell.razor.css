@@ -1,6 +1,15 @@
 /* CSS for Cell component */
-.cell
-{
-    border:double;
-    padding:50px;
+.cell {
+    box-sizing: border-box;
+    width: 48px;
+    height: 48px;
+    border: 1px solid #555;
 }
+
+    .cell.buildable {
+        background: #3a7d44;
+    }
+
+    .cell.path {
+        background: #c2a878;
+    }

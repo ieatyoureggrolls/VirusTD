@@ -1,7 +1,12 @@
-﻿<h3>Cell</h3>
-<div class="cell">
-
+﻿<div class="cell @(Data.Type == CellType.Path ? "path" : "buildable")"
+     @onclick="HandleClick">
+    
 </div>
-@code {
 
+@code {
+    [Parameter] public GridCell Data { get; set; } = default!;
+    //This cell component calling a method from the GridCell class
+    [Parameter] public EventCallback<GridCell> OnCellClicked { get; set; }
+
+    private Task HandleClick() => OnCellClicked.InvokeAsync(Data);
 }
