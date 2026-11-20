@@ -5,11 +5,13 @@
 <div class="board" style="grid-template-columns: repeat(@Width, 48px);">
     @foreach (var cell in cells)
     {
+        //for each cell in the list cells, creat a Cell.razor component
         <Cell Data="cell" OnCellClicked="HandleCellClicked" />
     }
 </div>
 
 @code {
+    //grid dimensions, if no parameters are passed when creating this grid.razor, defaults to a 10 x 10 grid
     [Parameter] public int Width { get; set; } = 10;
     [Parameter] public int Height { get; set; } = 10;
 

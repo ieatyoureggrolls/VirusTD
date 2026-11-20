@@ -1,9 +1,11 @@
-﻿<div class="cell @(Data.Type == CellType.Path ? "path" : "buildable")"
+﻿<!-- sets the divs class to cell (its current type) Right now it only switches between path and buildable, I will change later-->
+<div class="cell @(Data.Type == CellType.Path ? "path" : "buildable")"
      @onclick="HandleClick">
     
 </div>
 
 @code {
+    //Represents a GridCell.cs in the models folder
     [Parameter] public GridCell Data { get; set; } = default!;
     //This cell component calling a method from the GridCell class
     [Parameter] public EventCallback<GridCell> OnCellClicked { get; set; }
