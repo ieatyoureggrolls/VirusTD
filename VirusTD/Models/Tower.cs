@@ -5,13 +5,13 @@ namespace VirusTD.Models
     public class Tower : Occupant
     {
 
-        public int yCoord { get; set; }
-        public int xCoord { get; set; }
+        public int Y { get; set; }
+        public int X { get; set; }
 
         public Tower(int x, int y) 
         {
-            yCoord = y;
-            xCoord = x;
+            Y = y;
+            X = x;
         }
 
         public int Immunity { get; set
@@ -31,9 +31,9 @@ namespace VirusTD.Models
             }
         } = 4;
         public int Cost { get; set; } = 10;
-        public int Range { get; set; } 
+        public int Radius { get; set; } = 2;
 
-        public int attackRange { get; set; }
+        public int AttackRange { get; set; }
 
         public void CheckInfected() 
         {
