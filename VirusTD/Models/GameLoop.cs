@@ -6,8 +6,8 @@
 
         public void gameloop() 
         {
-            Tower tower = new Tower();
-            Enemy enemy = new Enemy();
+            //Tower tower = new Tower();
+            Zombie enemy = new Zombie();
             
         }
 
