@@ -6,7 +6,7 @@
 
         public void gameloop() 
         {
-            Tower tower = new Tower();
+            //Tower tower = new Tower();
             Enemy enemy = new Enemy();
             
         }
