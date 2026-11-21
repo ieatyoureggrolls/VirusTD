@@ -6,7 +6,7 @@
     @foreach (var cell in cells)
     {
         //for each cell in the list cells, creat a Cell.razor component
-        <Cell Data="cell" OnCellClicked="HandleCellClicked" />
+        <Cell Data="cell" OnCellClicked="OnClickAddTower" />
     }
 </div>
 
@@ -51,7 +51,7 @@
     private void OnClickAddTower(GridCell cell)
     {
 
-        cell.Occupant = new Tower(); // WORK IN PROGRESS
+        cell.Occupant = new Tower(cell.X, cell.y); // WORK IN PROGRESS
         
     }
 }

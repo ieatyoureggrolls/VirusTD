@@ -4,11 +4,21 @@ namespace VirusTD.Models
 {
     public class Tower : Occupant
     {
+
+        public int yCoord { get; set; }
+        public int xCoord { get; set; }
+
+        public Tower(int x, int y) 
+        {
+            yCoord = y;
+            xCoord = x;
+        }
+
         public int Immunity { get; set
             {
                 if (value < 0) { value = 0; }
             }
-} = 10;
+        } = 10;
         public int Illness { get; set 
             {
                 if (value < 0) { value = 0;}
@@ -21,7 +31,9 @@ namespace VirusTD.Models
             }
         } = 4;
         public int Cost { get; set; } = 10;
-        public int MotionRange { get; set; } //this is not how it will be at the end
+        public int Range { get; set; } 
+
+        public int attackRange { get; set; }
 
         public void CheckInfected() 
         {
@@ -38,8 +50,8 @@ namespace VirusTD.Models
         public void IsHitby(Enemy enemy) 
         {
 
-            Illness += enemy.attack;
-            CheckInfected();
+           // Illness += enemy.attack;
+          //  CheckInfected();
         }
 
         public void Quarantined() 
@@ -49,6 +61,8 @@ namespace VirusTD.Models
 
 
         }
+
+        
 
     }
 }
