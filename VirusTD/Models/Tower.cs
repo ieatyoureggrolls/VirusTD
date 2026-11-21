@@ -47,7 +47,7 @@ namespace VirusTD.Models
             }
         }
 
-        public void IsHitby(Enemy enemy) 
+        public void IsHitby(Zombie enemy) 
         {
 
            // Illness += enemy.attack;

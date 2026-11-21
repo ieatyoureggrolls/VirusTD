@@ -1,7 +1,11 @@
-﻿namespace VirusTD.Models
+﻿using VirusTD.Interfaces;
+
+namespace VirusTD.Models
 {
-    public class Enemy
+    public class Zombie : Occupant
     {
+
+
         public bool explode;
         public int health;
 
