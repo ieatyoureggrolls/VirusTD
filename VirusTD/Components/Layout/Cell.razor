@@ -1,5 +1,5 @@
 ﻿<!-- sets the divs class to cell (its current type) Right now it only switches between path and buildable, I will change later-->
-<div class="cell @(Data.Type == CellType.Path ? "path" : "buildable") @CheckForTower()"
+<div class="cell @(Data.Type == CellType.Path ? "path" : "buildable") @CheckForOccupant()"
      @onclick="HandleClick">
     
 </div>
@@ -12,18 +12,26 @@
 
     private Task HandleClick() => OnCellClicked.InvokeAsync(Data);
 
-    private string CheckForTower()
+    private string CheckForOccupant()
     {
 
         if (Data.Type == CellType.Buildable)
         {
             if (Data.Occupant != null)
             {
+                return "tower";
+            }
+
+        }
+
+        if (Data.Type == CellType.Path)
+        {
+            if (Data.Occupant != null)
+            {
                 return "zombie";
             }
-            
+
         }
-        
         return "";
         
     }

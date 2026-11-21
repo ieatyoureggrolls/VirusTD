@@ -52,7 +52,15 @@
     {
 
         // cell.Occupant = new Tower(cell.X, cell.Y); WORK IN PROGRESS
-        cell.Occupant = new Zombie();
+        if (cell.Type == CellType.Path)
+        {
+            cell.Occupant = new Zombie();
+        }
+        if (cell.Type == CellType.Buildable)
+        {
+            cell.Occupant = new Tower(cell.X, cell.Y);
+        }
+
         
     }
 }
