@@ -19,18 +19,38 @@ namespace VirusTD.Components.Layout
             BuildGrid();
         }
 
-        private void BuildGrid()
+        private void BuildGrid(bool isNew = true)
         {
+
             //Clears cel array
             cells.Clear();
             //Setd id to 0, this will be used to keep track of a cell
             int id = 0;
-            for (int y = 0; y < Height; y++)
+            if (isNew)
             {
-                for (int x = 0; x < Width; x++)
+
+
+                for (int y = 0; y < Height; y++)
                 {
-                    //Initializes and adds a GridCell class to the cells array
-                    cells.Add(new GridCell { Id = id++, X = x, Y = y });
+                    for (int x = 0; x < Width; x++)
+                    {
+                        //Initializes and adds a GridCell class to the cells array
+                        cells.Add(new GridCell { Id = id++, X = x, Y = y });
+                    }
+                }
+
+            }
+            else
+            {
+                //Extract a sequential array of cell type and int corresponding to the enum
+                //int[] cellTypes = Load();
+                for (int y = 0; y < Height; y++)
+                {
+                    for (int x = 0; x < Width; x++)
+                    {
+                        //Initializes and adds a GridCell class to the cells array
+                        cells.Add(new GridCell { Id = id++, X = x, Y = y });
+                    }
                 }
             }
         }
@@ -59,14 +79,22 @@ namespace VirusTD.Components.Layout
 
 
         }
-        public int Load(object objectToLoad)
+        //It;s an object[] not an int[] because I plan to use the same interface for the user
+        public object[] Load()
         {
             throw new NotImplementedException();
         }
 
-        public int Save(string[] fieldsToSave)
-        {
-            throw new NotImplementedException();
+        public int Save() { 
+        
+            CellType[] cellTypes = new CellType[Height * Width];
+            for(int  i = 0; i < cells.Capacity; i++ )
+            {
+                cellTypes[i] = cells[i].Type;
+            }
+            //fileIO
+
+            return 0;
         }
     }
 }
