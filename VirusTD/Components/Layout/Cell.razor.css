@@ -15,9 +15,15 @@
     }
 
     .cell.tower {
-        background: #35eaff
+        background-image: url("/Images/Tower1.jpg");
+        background-size: cover;
+        background-position: center; 
+        background-repeat: no-repeat;
     }
 
     .cell.zombie {
-        background: #ac00ff
+        background-image: url("/Images/BasicZombie.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
     }
