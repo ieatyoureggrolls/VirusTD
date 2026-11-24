@@ -33,7 +33,10 @@ namespace VirusTD.Models
         public int Cost { get; set; } = 10;
         public int Radius { get; set; } = 2;
 
-        public int AttackRange { get; set; }
+        public int LowXRange => X - Radius < 0 ? 0 : X - Radius;
+        public int HighXRange => X + Radius;
+        public int LowYRange => Y - Radius < 0 ? 0 : Y - Radius;
+        public int HighYRange => Y - Radius;
 
         public void CheckInfected() 
         {
@@ -54,6 +57,10 @@ namespace VirusTD.Models
           //  CheckInfected();
         }
 
+        public void HitZombie() 
+        {
+            
+        }
         public void Quarantined() 
         {
 
