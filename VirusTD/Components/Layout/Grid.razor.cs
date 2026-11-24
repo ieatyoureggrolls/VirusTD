@@ -1,15 +1,23 @@
 using Microsoft.AspNetCore.Components;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Hosting;
 using VirusTD.Interfaces;
 using VirusTD.Models;
 
 namespace VirusTD.Components.Layout
 {
-    public partial class Grid : FileIO
+    public partial class Grid
     {
         //grid dimensions, if no parameters are passed when creating this grid.razor, defaults to a 10 x 10 grid
         [Parameter] public int Width { get; set; } = 10;
         [Parameter] public int Height { get; set; } = 10;
+
+        //This gets the project directory
+        [Inject] private IWebHostEnvironment Env { get; set; } = default!;
+
+        //is a property because it relies on an Inject
+        private string mapDirectory => Path.Combine(Env.ContentRootPath, "Maps");
+        string mapName;
 
         private List<GridCell> cells = new();
 
@@ -19,50 +27,41 @@ namespace VirusTD.Components.Layout
             BuildGrid();
         }
 
-        private void BuildGrid(bool isNew = true)
+        private void BuildGrid()
         {
-
-            //Clears cel array
             cells.Clear();
-            //Setd id to 0, this will be used to keep track of a cell
             int id = 0;
-            if (isNew)
+            for (int y = 0; y < Height; y++)
             {
-
-
-                for (int y = 0; y < Height; y++)
+                for (int x = 0; x < Width; x++)
                 {
-                    for (int x = 0; x < Width; x++)
-                    {
-                        //Initializes and adds a GridCell class to the cells array
-                        cells.Add(new GridCell { Id = id++, X = x, Y = y });
-                    }
-                }
-
-            }
-            else
-            {
-                //Extract a sequential array of cell type and int corresponding to the enum
-                //int[] cellTypes = Load();
-                for (int y = 0; y < Height; y++)
-                {
-                    for (int x = 0; x < Width; x++)
-                    {
-                        //Initializes and adds a GridCell class to the cells array
-                        cells.Add(new GridCell { Id = id++, X = x, Y = y });
-                    }
+                    cells.Add(new GridCell { Id = id++, X = x, Y = y });
                 }
             }
         }
 
-        private void HandleCellClicked(GridCell cell)
+        private void BuildGrid(CellType[] cellTypes)
         {
-            // Tower placement goes here later.
-            //simple type check
-            cell.Type = cell.Type == CellType.Buildable ? CellType.Path : CellType.Buildable;
-            Debug.WriteLine(cell.Type);
-            Debug.WriteLine(cell.X + "" + cell.Y);
+            cells.Clear();
+            int id = 0;
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    cells.Add(new GridCell { Id = id++, X = x, Y = y, Type = cellTypes[id]});
+                }
+            }
         }
+
+
+        //private void OnClickAddTower(GridCell cell)
+        //{
+        //    // Tower placement goes here later.
+        //    //simple type check
+        //    cell.Type = cell.Type == CellType.Buildable ? CellType.Path : CellType.Buildable;
+        //    Debug.WriteLine(cell.Type);
+        //    Debug.WriteLine(cell.X + "" + cell.Y);
+        //}
 
         private void OnClickAddTower(GridCell cell)
         {
@@ -79,22 +78,70 @@ namespace VirusTD.Components.Layout
 
 
         }
-        //It;s an object[] not an int[] because I plan to use the same interface for the user
-        public object[] Load()
+
+        private string GetMapPath(string name) 
+        { 
+            return Path.Combine(mapDirectory, name + ".csv");
+        }
+        private async Task<bool> LoadAsync(string name)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Debug.WriteLine("Map name is empty");
+                return false;
+            }
+
+            string path = GetMapPath(name);
+            if (!File.Exists(path))
+            {
+                Debug.WriteLine($"No map named '{name}'");
+                return false;
+            }
+
+            try
+            {
+                string typeList = await File.ReadAllTextAsync(path);
+                var types = typeList.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(s => Enum.Parse<CellType>(s.Trim()))
+                    .ToList();
+
+                if (types.Count != cells.Count)
+                {
+                    Debug.WriteLine($"Map '{name}' has {types.Count} cells, grid has {cells.Count}");
+                    return false;
+                }
+
+                for (int i = 0; i < cells.Count; i++)
+                {
+                    cells[i].Type = types[i];
+                }
+                Debug.WriteLine("Loaded");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //Enum.Parse throws if the file contains a value that isn't a CellType
+                Debug.WriteLine($"FAILED: {ex.Message}");
+                return false;
+            }
         }
 
-        public int Save() { 
-        
-            CellType[] cellTypes = new CellType[Height * Width];
-            for(int  i = 0; i < cells.Capacity; i++ )
+        public async Task<bool> SaveAsync(string name)
+        {
+            
+            try
             {
-                cellTypes[i] = cells[i].Type;
+                string line = string.Join(",", cells.Select(c => c.Type));
+                //Writes the lines of cell types to /Maps/name.csv
+                await File.WriteAllTextAsync(Path.Combine(mapDirectory, name + ".csv"), line);
+                Debug.WriteLine("Saved");
+                return true;
             }
-            //fileIO
-
-            return 0;
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"FAILED: {ex.Message}");
+                return false;
+            }
         }
     }
 }

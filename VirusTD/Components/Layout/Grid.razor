@@ -1,6 +1,12 @@
-﻿
+﻿@inject PersistentComponentState ApplicationState
 
 <!-- The  style="grid-template-columns: repeat(@Width, 48px) tells css to make the width of all cells 48px, as well as make the cells appear in a grid format -->
+<div class="map-controls">
+    <input @bind="mapName" placeholder="Map name" />
+    <button @onclick="() => SaveAsync(mapName)">Save</button>
+    <button @onclick="() => LoadAsync(mapName)">Load</button>
+</div>
+
 <div class="board" style="grid-template-columns: repeat(@Width, 48px);">
     @foreach (var cell in cells)
     {
