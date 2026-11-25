@@ -1,7 +1,17 @@
 ﻿@page "/Battle"
 @rendermode InteractiveServer
+@using VirusTD.Models;
 
 <PageTitle>Battle</PageTitle>
 <h3>Battle Page</h3>
 
-<Grid Width="30" Height="15" />
+<Grid Width="30" Height="15" GridCells="@cells"/>
+
+<div class="btn">
+	<button @onclick="() => GameLoop.gameloop(cells)">Next</button>
+</div>
+
+@code {
+	private List<GridCell> cells = new();
+	
+}
