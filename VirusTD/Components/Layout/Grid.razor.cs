@@ -11,6 +11,7 @@ namespace VirusTD.Components.Layout
         //grid dimensions, if no parameters are passed when creating this grid.razor, defaults to a 10 x 10 grid
         [Parameter] public int Width { get; set; } = 10;
         [Parameter] public int Height { get; set; } = 10;
+        [Parameter] public List<GridCell> cells { get; set; }
 
         //This gets the project directory
         [Inject] private IWebHostEnvironment Env { get; set; } = default!;
@@ -19,7 +20,7 @@ namespace VirusTD.Components.Layout
         private string mapDirectory => Path.Combine(Env.ContentRootPath, "Maps");
         string mapName;
 
-        private List<GridCell> cells = new();
+       
 
         //Starts when blazor creates this component
         protected override void OnInitialized()
@@ -38,6 +39,22 @@ namespace VirusTD.Components.Layout
                     cells.Add(new GridCell { Id = id++, X = x, Y = y });
                 }
             }
+        }
+
+        public GridCell findCell(int x, int y)
+        {
+            GridCell cellToReturn = null;
+
+            foreach (GridCell cell in cells)
+            {
+                if (cell.X == x && cell.Y == y)
+                {
+                    cellToReturn = cell;
+                }
+               
+            
+            }
+            return cellToReturn; 
         }
 
         private void BuildGrid(CellType[] cellTypes)
