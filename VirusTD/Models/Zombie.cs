@@ -1,61 +1,16 @@
 ﻿using VirusTD.Interfaces;
-using System.Diagnostics;
 
 namespace VirusTD.Models
 {
     public class Zombie : Occupant
     {
 
-        public List<GridCell> TheGrid { get; set; }
-
-        public int X { get; set; }
-        public int Y { get; set; }
 
         public bool explode;
-        public int health = 5;
+        public int health;
+
         public int ExplodeDamage;
         public int attack;
-
-        public Zombie(int x, int y, List<GridCell> grid)
-        {
-            X = x;
-            Y = y;
-            TheGrid = grid;
-        }
-
-        //public void FindTower()
-        //{
-        //    foreach (GridCell cell in TheGrid)
-        //    {
-        //        if (cell.Occupant is Tower tower)
-        //        {
-        //            double distance = Math.Sqrt(
-        //                Math.Pow(X - tower.X, 2) +
-        //                Math.Pow(Y - tower.Y, 2)
-        //            );
-
-        //            if (distance <= 1)
-        //            {
-
-        //                AttackTower(tower);
-        //            }
-        //        }
-        //    }
-        //}
-
-        public void IsHitBy(Tower tower) 
-        {
-            this.health -= tower.AttackDamage;
-            if (this.health <= 0) 
-            {
-           //     TheGrid
-            }
-        }
-
-        public void AttackTower(Tower tower)
-        {
-            // Attack tower here
-        }
         static Random rand = new Random();
         public class BasicEnemy
         {

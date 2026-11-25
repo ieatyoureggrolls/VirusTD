@@ -1,33 +1,29 @@
 ﻿namespace VirusTD.Models
 {
-    public static class GameLoop
+    public class GameLoop
     {
         
 
-        public static void gameloop(List<GridCell> GridCells) 
+        public void gameloop() 
         {
-
-            foreach (GridCell cell in GridCells) 
-            {
-                if (cell.Occupant is Tower tower)
-                {
-                    tower.FindZombie();
-                    
-                }                   
-            }
+            //Tower tower = new Tower();
+            Zombie enemy = new Zombie();
             
         }
 
-        public static void PreparationLoop() 
+        public void TowerController() 
+        {
+            
+        }
+
+        public void EnemyController() 
         {
         
         }
 
-        public static void RoundLoop() 
+        public void MiscellaniousController() 
         {
             
-
-
         }
 
     }
