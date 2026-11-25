@@ -41,21 +41,7 @@ namespace VirusTD.Components.Layout
             }
         }
 
-        public GridCell findCell(int x, int y)
-        {
-            GridCell cellToReturn = null;
 
-            foreach (GridCell cell in cells)
-            {
-                if (cell.X == x && cell.Y == y)
-                {
-                    cellToReturn = cell;
-                }
-               
-            
-            }
-            return cellToReturn; 
-        }
 
         private void BuildGrid(CellType[] cellTypes)
         {
