@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using VirusTD.Interfaces;
 using VirusTD.Models;
+using System.Runtime.CompilerServices;
 
 namespace VirusTD.Components.Layout
 {
@@ -12,6 +13,8 @@ namespace VirusTD.Components.Layout
         [Parameter] public int Width { get; set; } = 10;
         [Parameter] public int Height { get; set; } = 10;
 
+        [Parameter] public List<GridCell> GridCells {  get; set; }
+
         //This gets the project directory
         [Inject] private IWebHostEnvironment Env { get; set; } = default!;
 
@@ -19,7 +22,7 @@ namespace VirusTD.Components.Layout
         private string mapDirectory => Path.Combine(Env.ContentRootPath, "Maps");
         string mapName;
 
-        private List<GridCell> cells = new();
+         
 
         //Starts when blazor creates this component
         protected override void OnInitialized()
@@ -29,26 +32,46 @@ namespace VirusTD.Components.Layout
 
         private void BuildGrid()
         {
-            cells.Clear();
+
+            GridCells.Clear();
             int id = 0;
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    cells.Add(new GridCell { Id = id++, X = x, Y = y });
+                    GridCells.Add(new GridCell { Id = id++, X = x, Y = y });
                 }
             }
         }
 
+        //private void RefreshGridList()
+        //{
+
+          
+
+        //    foreach (GridCell cell in cells) 
+        //    { 
+        //        if (cell.Occupant != null)     //This might not be needed but im still testing
+        //        {
+        //            OccupantList.Add(cell);
+        //        }
+
+        //    }
+
+           
+
+
+        //}
+
         private void BuildGrid(CellType[] cellTypes)
         {
-            cells.Clear();
+            GridCells.Clear();
             int id = 0;
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    cells.Add(new GridCell { Id = id++, X = x, Y = y, Type = cellTypes[id]});
+                    GridCells.Add(new GridCell { Id = id++, X = x, Y = y, Type = cellTypes[id]});
                 }
             }
         }
@@ -66,18 +89,19 @@ namespace VirusTD.Components.Layout
         private void OnClickAddTower(GridCell cell)
         {
 
-            // cell.Occupant = new Tower(cell.X, cell.Y); WORK IN PROGRESS
             if (cell.Type == CellType.Path)
             {
-                cell.Occupant = new Zombie();
+                cell.Occupant = new Zombie(cell.X, cell.Y, GridCells);
             }
             if (cell.Type == CellType.Buildable)
             {
-                cell.Occupant = new Tower(cell.X, cell.Y);
+                cell.Occupant = new Tower(cell.X, cell.Y, GridCells);
             }
 
 
         }
+
+
 
         private string GetMapPath(string name) 
         { 
@@ -105,15 +129,15 @@ namespace VirusTD.Components.Layout
                     .Select(s => Enum.Parse<CellType>(s.Trim()))
                     .ToList();
 
-                if (types.Count != cells.Count)
+                if (types.Count != GridCells.Count)
                 {
-                    Debug.WriteLine($"Map '{name}' has {types.Count} cells, grid has {cells.Count}");
+                    Debug.WriteLine($"Map '{name}' has {types.Count} cells, grid has {GridCells.Count}");
                     return false;
                 }
 
-                for (int i = 0; i < cells.Count; i++)
+                for (int i = 0; i < GridCells.Count; i++)
                 {
-                    cells[i].Type = types[i];
+                    GridCells[i].Type = types[i];
                 }
                 Debug.WriteLine("Loaded");
                 return true;
@@ -131,7 +155,7 @@ namespace VirusTD.Components.Layout
             
             try
             {
-                string line = string.Join(",", cells.Select(c => c.Type));
+                string line = string.Join(",", GridCells.Select(c => c.Type));
                 //Writes the lines of cell types to /Maps/name.csv
                 await File.WriteAllTextAsync(Path.Combine(mapDirectory, name + ".csv"), line);
                 Debug.WriteLine("Saved");
