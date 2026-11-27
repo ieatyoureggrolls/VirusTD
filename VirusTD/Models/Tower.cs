@@ -6,12 +6,12 @@ namespace VirusTD.Models
     public class Tower : Occupant
     {
 
-        public List<GridCell> TheGrid { get; set; }
+        public GridCell[,] TheGrid { get; set; }
 
         public int Y { get; set; }
         public int X { get; set; }
 
-        public Tower(int x, int y, List<GridCell> grid)
+        public Tower(int x, int y, GridCell[,] grid)
         {
             Y = y;
             X = x;

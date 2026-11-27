@@ -12,6 +12,19 @@
 </div>
 
 @code {
-	private List<GridCell> cells = new();
+	private GridCell[,] cells = new GridCell[30, 15];
 	
+	protected override void OnInitialized()
+	{
+		cells = new GridCell[30, 15]; // [width, height], matching Grid Width="30" Height="15"
+		int id = 0;
+
+		for (int y = 0; y < cells.GetLength(1); y++)
+		{
+			for (int x = 0; x < cells.GetLength(0); x++)
+			{
+				cells[x, y] = new GridCell { Id = id++, X = x, Y = y };
+			}
+		}
+	}
 }

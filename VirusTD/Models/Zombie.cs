@@ -6,7 +6,7 @@ namespace VirusTD.Models
     public class Zombie : Occupant
     {
 
-        public List<GridCell> TheGrid { get; set; }
+        public GridCell[,] TheGrid { get; set; }
 
         public int X { get; set; }
         public int Y { get; set; }
@@ -16,7 +16,7 @@ namespace VirusTD.Models
         public int ExplodeDamage;
         public int attack;
 
-        public Zombie(int x, int y, List<GridCell> grid)
+        public Zombie(int x, int y, GridCell[,] grid)
         {
             X = x;
             Y = y;

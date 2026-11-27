@@ -12,9 +12,8 @@ namespace VirusTD.Components.Layout
         //grid dimensions, if no parameters are passed when creating this grid.razor, defaults to a 10 x 10 grid
         [Parameter] public int Width { get; set; } = 10;
         [Parameter] public int Height { get; set; } = 10;
-        [Parameter] public List<GridCell> cells { get; set; }
 
-        [Parameter] public List<GridCell> GridCells {  get; set; }
+        [Parameter] public GridCell[,] GridCells {  get; set; }
 
         //This gets the project directory
         [Inject] private IWebHostEnvironment Env { get; set; } = default!;
@@ -28,19 +27,18 @@ namespace VirusTD.Components.Layout
         //Starts when blazor creates this component
         protected override void OnInitialized()
         {
-            BuildGrid();
+            //BuildGrid();
         }
 
         private void BuildGrid()
         {
-
-            GridCells.Clear();
+            GridCells = new GridCell[Width, Height];
             int id = 0;
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    GridCells.Add(new GridCell { Id = id++, X = x, Y = y });
+                    GridCells[x,y] = new GridCell { Id = id++, X = x, Y = y};
                 }
             }
         }
@@ -49,7 +47,7 @@ namespace VirusTD.Components.Layout
         {
             GridCell cellToReturn = null;
 
-            foreach (GridCell cell in cells)
+            foreach (GridCell cell in GridCells)
             {
                 if (cell.X == x && cell.Y == y)
                 {
@@ -63,13 +61,13 @@ namespace VirusTD.Components.Layout
 
         private void BuildGrid(CellType[] cellTypes)
         {
-            GridCells.Clear();
+            GridCells = new GridCell[Width, Height];
             int id = 0;
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    GridCells.Add(new GridCell { Id = id++, X = x, Y = y, Type = cellTypes[id]});
+                    GridCells[x, y] = new GridCell { Id = id++, X = x, Y = y, Type = cellTypes[id] };
                 }
             }
         }
@@ -127,15 +125,20 @@ namespace VirusTD.Components.Layout
                     .Select(s => Enum.Parse<CellType>(s.Trim()))
                     .ToList();
 
-                if (types.Count != GridCells.Count)
+                if (types.Count != GridCells.Length)
                 {
-                    Debug.WriteLine($"Map '{name}' has {types.Count} cells, grid has {GridCells.Count}");
+                    Debug.WriteLine($"Map '{name}' has {types.Count} cells, grid has {GridCells.Length} cells");
                     return false;
                 }
-
-                for (int i = 0; i < GridCells.Count; i++)
+                int typeListIndex = 0;
+                for (int x = 0; x < Width; x++)
                 {
-                    GridCells[i].Type = types[i];
+                    for(int y = 0; y < Height; y++)
+                    {
+                        GridCells[x,y].Type = types[typeListIndex];
+                        typeListIndex++;
+                    }
+                   
                 }
                 Debug.WriteLine("Loaded");
                 return true;
@@ -150,12 +153,18 @@ namespace VirusTD.Components.Layout
 
         public async Task<bool> SaveAsync(string name)
         {
-            
+            string[,] cellTypes = new string[Width, Height];
             try
             {
-                string line = string.Join(",", GridCells.Select(c => c.Type));
+                for (int y = 0; y < Height; y++)
+                {
+                    for (int x = 0; x < Width; x++)
+                    {
+                        cellTypes[x, y] = GridCells[x, y].Type.ToString();
+                    }
+                }
                 //Writes the lines of cell types to /Maps/name.csv
-                await File.WriteAllTextAsync(Path.Combine(mapDirectory, name + ".csv"), line);
+                await File.WriteAllTextAsync(Path.Combine(mapDirectory, name + ".csv"), string.Join(",", cellTypes));
                 Debug.WriteLine("Saved");
                 return true;
             }

@@ -4,9 +4,9 @@
     {
         
 
-        public static void gameloop(List<GridCell> GridCells) 
+        public static void gameloop(GridCell[,] GridCells) 
         {
-
+   
             foreach (GridCell cell in GridCells) 
             {
                 if (cell.Occupant is Tower tower)
